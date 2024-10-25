@@ -1,0 +1,24 @@
+<!-- bit_mailer/templates/submissions.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submissions</title>
+</head>
+<body>
+    <h2>Submissions</h2>
+    <div id="submissionList"></div>
+
+    <script>
+        fetch("{% url 'submissions' %}", { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(response => response.json())
+            .then(data => {
+                const submissionList = document.getElementById('submissionList');
+                data.submissions.forEach(submission => {
+                    const item = document.createElement('p');
+                    item.innerText = `Subject: ${submission.subject}, Status: ${submission.status}`;
+                    submissionList.appendChild(item);
+                });
+            });
+    </script>
+</body>
+</html>

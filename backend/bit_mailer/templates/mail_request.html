@@ -1,0 +1,31 @@
+<!-- bit_mailer/templates/mail_request.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mail Request Form</title>
+</head>
+<body>
+    <h2>Mail Request Form</h2>
+    <form id="mailRequestForm">
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    <p id="responseMessage"></p>
+
+    <script>
+        document.getElementById('mailRequestForm').onsubmit = function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch("{% url 'mail_request' %}", {
+                method: 'POST',
+                headers: {'X-Requested-With': 'XMLHttpRequest'},
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('responseMessage').innerText = data.message;
+            });
+        };
+    </script>
+</body>
+</html>
